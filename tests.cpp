@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
-#include "binary_heap.h"
-#include "binomial_heap.h"
-#include "fibonacci_heap.h"
-#include "my_vector.h"
-
+#include "binary_heap.cpp"
+#include "binomial_heap.cpp"
+#include "fibonacci_heap.cpp"
 
 class ClassDeclaration : public testing::Test {
 public:
@@ -139,7 +137,7 @@ TEST_F(ClassDeclaration, binary_heapheap_mass_constructor_load)
     ASSERT_EQ(arr[i], heap.extract_min());
 }
 
-TEST_F(ClassDeclaration, binary_heap_optimize)
+TEST_F(ClassDeclaration, binary_heap_optimize_load)
 {
     binary_heap<int> heap;
     heap.optimize(100000, 50);
@@ -177,27 +175,6 @@ TEST_F(ClassDeclaration, bianry_heap_pointer_load)
     ASSERT_EQ(400, heap.extract_min());
     ASSERT_EQ(401, heap.extract_min());
 }
-
-
-TEST_F(ClassDeclaration, binary_heap_vector)
-{
-    my_vector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
-    vec.push_back(4);
-    ASSERT_EQ(4, vec.size());
-    ASSERT_EQ(3, vec[2]);
-    vec.pop_back();
-    vec.push_back(-1);
-    ASSERT_EQ(-1, vec[vec.size()-1]);
-    vec.pop_back();
-    ASSERT_EQ(3, vec[2]);
-    vec.pop_back();
-    ASSERT_EQ(2, vec[1]);
-    ASSERT_EQ(1, vec[0]);
-}
-
 
 TEST_F(ClassDeclaration, binomial_heap_basics)
 {
@@ -255,27 +232,27 @@ TEST_F(ClassDeclaration, binomial_heap_pointer)
     heap.insert(8);
     heap.insert(-1);
     ASSERT_EQ(-1, heap.get_min());
-    node<int>* T1 = heap.insert(3);
+    binomial_node<int>* T1 = heap.insert(3);
     heap.insert(2);
     ASSERT_EQ(-1, heap.extract_min());
     ASSERT_EQ(2, heap.extract_min());
     heap.insert(4);
     heap.change(T1, 5);
     ASSERT_EQ(4, heap.extract_min());
-    node<int>* T2 = heap.insert(-3);
+    binomial_node<int>* T2 = heap.insert(-3);
     heap.insert(-5);
     ASSERT_EQ(-5, heap.extract_min());
     heap.change(T2, 6);
     ASSERT_EQ(5, heap.extract_min());
     ASSERT_EQ(6, heap.extract_min());
     heap.insert(2);
-    node<int>* T3 = heap.insert(3);
+    binomial_node<int>* T3 = heap.insert(3);
     ASSERT_EQ(2, heap.extract_min());
     heap.erase(T3);
     ASSERT_ANY_THROW(heap.erase(T3));
     ASSERT_ANY_THROW(heap.change(T3, 0));
     ASSERT_EQ(8, heap.extract_min());
-    node<int>* T4 = heap.insert(1);
+    binomial_node<int>* T4 = heap.insert(1);
     heap.insert(0);
     heap.insert(-3);
     heap.change(T4, -2);
@@ -283,7 +260,7 @@ TEST_F(ClassDeclaration, binomial_heap_pointer)
     ASSERT_EQ(-2, heap.extract_min());
     ASSERT_ANY_THROW(heap.erase(T4));
     ASSERT_ANY_THROW(heap.change(T4, 0));
-    node<int>* T5 = heap.insert(2);
+    binomial_node<int>* T5 = heap.insert(2);
     heap.insert(1);
     heap.insert(-1);
     heap.erase(T5);
@@ -294,7 +271,7 @@ TEST_F(ClassDeclaration, binomial_heap_pointer)
     ASSERT_EQ(1, heap.extract_min());
     heap.insert(10);
     ASSERT_EQ(10, heap.get_min());
-    node<int>* T6 = heap.insert(19);
+    binomial_node<int>* T6 = heap.insert(19);
     heap.insert(2);
     ASSERT_EQ(2, heap.get_min());
     heap.change(T6, 9);
@@ -305,7 +282,7 @@ TEST_F(ClassDeclaration, binomial_heap_pointer)
     ASSERT_EQ(10, heap.extract_min());
     ASSERT_ANY_THROW(heap.get_min());
     ASSERT_ANY_THROW(heap.extract_min());
-    node<int>* T7 = heap.insert(1);
+    binomial_node<int>* T7 = heap.insert(1);
     heap.insert(4);
     heap.insert(8);
     ASSERT_EQ(1, heap.get_min());

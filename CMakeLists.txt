@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 2.8)
 
 project(project)
@@ -19,7 +18,7 @@ add_executable(main ${SOURCE_EXE})
 
 add_subdirectory(Fibonacci_heap)
 add_subdirectory(Binomial_heap)
-add_subderictory(Binary_heap)
+add_subdirectory(Binary_heap)
 
 
 target_link_libraries(main Fibonacci_heap)
@@ -31,7 +30,7 @@ target_link_libraries(main Binomial_heap)
 option(BUILD_TESTS "Build unit tests" OFF)
 
 if (BUILD_TESTS)
-	add_subdirectory(ext/gtest-1.8.0)
+	add_subdirectory(ext/googletest)
 	include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 	set(SOURCE_EXE tests.cpp)
