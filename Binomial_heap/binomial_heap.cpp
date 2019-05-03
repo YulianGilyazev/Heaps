@@ -19,7 +19,7 @@ bool binomial_heap<Key>::is_empty()
 }
 
 template<class Key>
-node<Key>* binomial_heap<Key>::tree_extract_min(node<Key>* min)
+binomial_node<Key>* binomial_heap<Key>::tree_extract_min(binomial_node<Key>* min)
 {
     if (min->degree == 0)
         return nullptr;
@@ -28,9 +28,9 @@ node<Key>* binomial_heap<Key>::tree_extract_min(node<Key>* min)
         (min->child)->parent == nullptr;
         return min->child;
     }
-    node<Key>* curH = nullptr;
-    node<Key>* R = min->child;
-    node<Key>* Q = nullptr;
+    binomial_node<Key>* curH = nullptr;
+    binomial_node<Key>* R = min->child;
+    binomial_node<Key>* Q = nullptr;
     curH = R->sibling;
     R->sibling = nullptr;
     R->adoptee = nullptr;
@@ -46,7 +46,7 @@ node<Key>* binomial_heap<Key>::tree_extract_min(node<Key>* min)
 }
 
 template <class Key>
-node<Key>* binomial_heap<Key>::tree_merge(node<Key>* root1, node<Key>* root2)
+binomial_node<Key>* binomial_heap<Key>::tree_merge(binomial_node<Key>* root1, binomial_node<Key>* root2)
 {
     if (root1 == nullptr)
         return root2;
@@ -64,8 +64,8 @@ node<Key>* binomial_heap<Key>::tree_merge(node<Key>* root1, node<Key>* root2)
     }
     else
     {
-        node<Key>* curNode1 = root1->child;
-        node<Key>* curNode2 = root2;
+        binomial_node<Key>* curNode1 = root1->child;
+        binomial_node<Key>* curNode2 = root2;
         root1->child = root2;
         root2->parent = root1;
         (root1->degree)++;
@@ -79,7 +79,7 @@ node<Key>* binomial_heap<Key>::tree_merge(node<Key>* root1, node<Key>* root2)
 }
 
 template <class Key>
-node<Key>* binomial_heap<Key>::heap_merge(node<Key>* heap1, node<Key>* heap2)
+binomial_node<Key>* binomial_heap<Key>::heap_merge(binomial_node<Key>* heap1, binomial_node<Key>* heap2)
 {
     if (heap1 == nullptr)
     {
@@ -89,12 +89,12 @@ node<Key>* binomial_heap<Key>::heap_merge(node<Key>* heap1, node<Key>* heap2)
     {
         return heap1;
     }
-    node<Key> *curHeap1;
-    node<Key> *curHeap2;
+    binomial_node<Key> *curHeap1;
+    binomial_node<Key> *curHeap2;
     curHeap1 = heap1;
     curHeap2 = heap2;
-    node<Key>* H = nullptr;
-    node<Key>* curH = nullptr;
+    binomial_node<Key>* H = nullptr;
+    binomial_node<Key>* curH = nullptr;
     if (curHeap1->degree < curHeap2->degree)
     {
         curH = curHeap1;
@@ -158,9 +158,9 @@ node<Key>* binomial_heap<Key>::heap_merge(node<Key>* heap1, node<Key>* heap2)
         }
         if (curH->degree == (curH->sibling)->degree)
         {
-            node<Key>* L = (curH->sibling)->sibling;
-            node<Key>* Q = curH->adoptee;
-            node<Key>* R = tree_merge(curH, curH->sibling);
+            binomial_node<Key>* L = (curH->sibling)->sibling;
+            binomial_node<Key>* Q = curH->adoptee;
+            binomial_node<Key>* R = tree_merge(curH, curH->sibling);
             if (Q == nullptr)
             {
                 curH = R;
@@ -195,7 +195,7 @@ Key binomial_heap<Key>::get_min()
 {
     if (heap_size == 0)
         throw logic_error("heap_is_empty");
-    node<Key>* curH = Heap;
+    binomial_node<Key>* curH = Heap;
     Key min = Heap->value;
     while (curH->sibling != nullptr)
     {
@@ -207,10 +207,10 @@ Key binomial_heap<Key>::get_min()
 }
 
 template <class Key>
-node<Key>* binomial_heap<Key>::insert(Key key)
+binomial_node<Key>* binomial_heap<Key>::insert(Key key)
 {
     ++heap_size;
-    node<Key>* K = new node<Key>;
+    binomial_node<Key>* K = new binomial_node<Key>;
     K->value = key;
     K->sibling = nullptr;
     K->adoptee = nullptr;
@@ -218,7 +218,7 @@ node<Key>* binomial_heap<Key>::insert(Key key)
     K->parent = nullptr;
     K->child = nullptr;
     K->mark = 0;
-    node<Key>* a = new node<Key>;
+    binomial_node<Key>* a = new binomial_node<Key>;
     a->point = K;
     K->point = a;
     Heap = heap_merge(Heap, K);
@@ -230,9 +230,9 @@ Key binomial_heap<Key>::extract_min()
 {
     if (heap_size == 0)
         throw logic_error("heap_is_empty");
-    node<Key>* min;
+    binomial_node<Key>* min;
     Key ans;
-    node<Key>* curH = Heap;
+    binomial_node<Key>* curH = Heap;
     heap_size--;
     ans = Heap->value;
     min = Heap;
@@ -255,33 +255,33 @@ Key binomial_heap<Key>::extract_min()
         if (min->adoptee == nullptr)
         {
 
-            node<Key>* Q = min->sibling;
+            binomial_node<Key>* Q = min->sibling;
             Q->adoptee = nullptr;
             min->sibling = nullptr;
             min->adoptee = nullptr;
-            node<Key>* R = tree_extract_min(min);
+            binomial_node<Key>* R = tree_extract_min(min);
             Heap = heap_merge(R, Q);
         }// если слева от min нет деревьев
         else
         {
             if (min->sibling == nullptr)
             {
-                node<Key>* Q = min->adoptee;
+                binomial_node<Key>* Q = min->adoptee;
                 Q->sibling = nullptr;
                 min->sibling = nullptr;
                 min->adoptee = nullptr;
-                node<Key>* R = tree_extract_min(min);
+                binomial_node<Key>* R = tree_extract_min(min);
                 Heap = heap_merge(R, Heap);
             }
             else //если есть соседи и слева и справа от min
             {
-                node<Key>* A = min->adoptee;
-                node<Key>* B = min->sibling;
+                binomial_node<Key>* A = min->adoptee;
+                binomial_node<Key>* B = min->sibling;
                 min->sibling = nullptr;
                 min->adoptee = nullptr;
                 A->sibling = nullptr;
                 B->adoptee = nullptr;
-                node<Key>* R = tree_extract_min(min);
+                binomial_node<Key>* R = tree_extract_min(min);
                 Heap = heap_merge(Heap, R);
                 Heap = heap_merge(Heap, B);
             }
@@ -292,7 +292,7 @@ Key binomial_heap<Key>::extract_min()
 }
 
 template <class Key>
-void binomial_heap<Key>::change(node<Key>* ptr, Key new_value)
+void binomial_heap<Key>::change(binomial_node<Key>* ptr, Key new_value)
 {
     if ((ptr->point)->mark == 1)
         throw logic_error("element was deleted earlier");
@@ -305,7 +305,7 @@ void binomial_heap<Key>::change(node<Key>* ptr, Key new_value)
 }
 
 template <class Key>
-void binomial_heap<Key>::erase(node<Key>* ptr)
+void binomial_heap<Key>::erase(binomial_node<Key>* ptr)
 {
     if ((ptr->point)->mark == 1)
         throw logic_error("element was deleted earlier");
@@ -315,7 +315,7 @@ void binomial_heap<Key>::erase(node<Key>* ptr)
 }
 
 template <class Key>
-void binomial_heap<Key>::siftUp(node<Key>* ptr)
+void binomial_heap<Key>::siftUp(binomial_node<Key>* ptr)
 {
     //std::cout << "r ";
     if (ptr->parent != nullptr)
@@ -329,12 +329,12 @@ void binomial_heap<Key>::siftUp(node<Key>* ptr)
 }
 
 template <class Key>
-void binomial_heap<Key>::siftDown(node<Key>* ptr)
+void binomial_heap<Key>::siftDown(binomial_node<Key>* ptr)
 {
     //std::cout << "r ";
     if (ptr->child != nullptr)
     {
-        node<Key>* ptrLeftSon = ptr->child;
+        binomial_node<Key>* ptrLeftSon = ptr->child;
         if (ptrLeftSon->sibling == nullptr)
         {
             if (ptr->value > ptrLeftSon->value)
@@ -342,8 +342,8 @@ void binomial_heap<Key>::siftDown(node<Key>* ptr)
         }
         else
         {
-            node<Key>* ptrRightSon = ptrLeftSon->sibling;
-            node<Key>* curMin = ptrLeftSon;
+            binomial_node<Key>* ptrRightSon = ptrLeftSon->sibling;
+            binomial_node<Key>* curMin = ptrLeftSon;
             Key min = ptrLeftSon->value;
             while (ptrRightSon != nullptr)
             {
@@ -366,20 +366,20 @@ void binomial_heap<Key>::siftDown(node<Key>* ptr)
 template <class Key>
 void binomial_heap<Key>::merge(binomial_heap<Key>* otherHeap)
 {
-    node<Key>* node1 = otherHeap->Heap;
+    binomial_node<Key>* node1 = otherHeap->Heap;
     Heap = heap_merge(Heap, node1);
     heap_size = heap_size + otherHeap->heap_size;
     otherHeap->heap_size = 0;
 }
 
 template <class Key>
-void binomial_heap<Key>::_swap(node<Key>* ptr1, node<Key>* ptr2)
+void binomial_heap<Key>::_swap(binomial_node<Key>* ptr1, binomial_node<Key>* ptr2)
 {
     Key tmp;
     tmp = ptr1->value;
     ptr1->value = ptr2->value;
     ptr2->value = tmp;
-    node<Key>* ptrTmp;
+    binomial_node<Key>* ptrTmp;
     ptrTmp = ptr1->point;
     ptr2->point = ptrTmp;
     (ptr1->point)->point = ptr1;

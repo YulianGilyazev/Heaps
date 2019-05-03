@@ -1,5 +1,5 @@
 #include "fibonacci_heap.h"
-
+#include <stdexcept>
 using std::logic_error;
 using std::out_of_range;
 
@@ -8,7 +8,7 @@ template <class Key>
 class fibonacci_heap<Key>::pointer
 {
     friend fibonacci_heap;
-    node<Key>* ptr;
+    fibonacci_node<Key>* ptr;
 };
 
 
@@ -28,7 +28,7 @@ template <class Key>
 typename fibonacci_heap<Key>::pointer* fibonacci_heap<Key>::insert(Key key)
 {
     ++heap_size;
-    node<Key>* K = new node<Key>;
+    fibonacci_node<Key>* K = new fibonacci_node<Key>;
     K->sibling = K;
     K->value = key;
     K->adoptee = K;
@@ -54,14 +54,14 @@ typename fibonacci_heap<Key>::pointer* fibonacci_heap<Key>::insert(Key key)
 }
 
 template <class Key>
-node<Key>* fibonacci_heap<Key>::unionList(node<Key>* x, node<Key>* y)
+fibonacci_node<Key>* fibonacci_heap<Key>::unionList(fibonacci_node<Key>* x, fibonacci_node<Key>* y)
 {
     if (x == nullptr)
         return y;
     if (y == nullptr)
         return x;
-    node<Key>* L = x->sibling;
-    node<Key>* R = y->adoptee;
+    fibonacci_node<Key>* L = x->sibling;
+    fibonacci_node<Key>* R = y->adoptee;
     R->sibling = L;
     L->adoptee = R;
     x->sibling = y;
@@ -91,12 +91,12 @@ Key fibonacci_heap<Key>::extract_min()
         min = nullptr;
         return ans;
     }
-    node<Key>* A = min->child;
-    node<Key>* B = min->child;
+    fibonacci_node<Key>* A = min->child;
+    fibonacci_node<Key>* B = min->child;
     if (B != nullptr)
     {
         B->parent = nullptr;
-        node<Key>* U = B->sibling;
+        fibonacci_node<Key>* U = B->sibling;
         while (U != B)
         {
             U->parent = nullptr;
@@ -104,8 +104,8 @@ Key fibonacci_heap<Key>::extract_min()
         }
     }
     A = unionList(min, A);
-    node<Key>* L = min->adoptee;
-    node<Key>* R = min->sibling;
+    fibonacci_node<Key>* L = min->adoptee;
+    fibonacci_node<Key>* R = min->sibling;
 
     L->sibling = R;
     R->adoptee = L;
@@ -121,12 +121,12 @@ void fibonacci_heap<Key>::consolidate()
 {
     if (min == nullptr)
         return;
-    typedef node<Key>* F;
+    typedef fibonacci_node<Key>* F;
     F A[40];
     for (int i = 0; i < 40; i++)
         A[i] = nullptr;
     A[min->degree] = min;
-    node<Key>* current = min->sibling;
+    fibonacci_node<Key>* current = min->sibling;
     while (A[current->degree] != current)
     {
         current->parent = nullptr;
@@ -137,16 +137,16 @@ void fibonacci_heap<Key>::consolidate()
         }
         else
         {
-            node<Key>* tree1 = current;
-            node<Key>* tree2 = A[current->degree];
-            node<Key>* L = tree2->adoptee;
-            node<Key>* R = tree2->sibling;
+            fibonacci_node<Key>* tree1 = current;
+            fibonacci_node<Key>* tree2 = A[current->degree];
+            fibonacci_node<Key>* L = tree2->adoptee;
+            fibonacci_node<Key>* R = tree2->sibling;
             A[current->degree] = nullptr;
             L->sibling = R;
             R->adoptee = L;
             tree2->sibling = tree2;
             tree2->adoptee = tree2;
-            node<Key>* tmp;
+            fibonacci_node<Key>* tmp;
             if (current->sibling == current)
                 tmp = nullptr;
             else
@@ -167,7 +167,7 @@ void fibonacci_heap<Key>::consolidate()
     }
 
     min = current;
-    node<Key>* B = current;
+    fibonacci_node<Key>* B = current;
     current = current->sibling;
     while (current != B)
     {
@@ -178,7 +178,7 @@ void fibonacci_heap<Key>::consolidate()
 }
 
 template <class Key>
-node<Key>* fibonacci_heap<Key>::tree_merge(node<Key>* root1, node<Key>* root2)
+fibonacci_node<Key>* fibonacci_heap<Key>::tree_merge(fibonacci_node<Key>* root1, fibonacci_node<Key>* root2)
 {
     if (root1 == nullptr)
     {
@@ -214,8 +214,8 @@ node<Key>* fibonacci_heap<Key>::tree_merge(node<Key>* root1, node<Key>* root2)
         root2->sibling = root2;
         root1->adoptee = root1;
         root2->adoptee = root2;
-        node<Key>* curNode1 = root1->child;
-        node<Key>* curNode2 = root2;
+        fibonacci_node<Key>* curNode1 = root1->child;
+        fibonacci_node<Key>* curNode2 = root2;
         root1->child = root2;
         root2->parent = root1;
         (root1->degree)++;
@@ -227,7 +227,7 @@ template <class Key>
 void fibonacci_heap<Key>::decrease(pointer* p, Key new_value)
 {
 
-    node<Key>* x = p->ptr;
+    fibonacci_node<Key>* x = p->ptr;
     if (x->deleted == true)
         throw logic_error(" element was deleted");
     x->value = new_value;
@@ -242,7 +242,7 @@ void fibonacci_heap<Key>::decrease(pointer* p, Key new_value)
 }
 
 template<class Key>
-void fibonacci_heap<Key>::cut(node<Key>* x)
+void fibonacci_heap<Key>::cut(fibonacci_node<Key>* x)
 {
     if (x->parent == nullptr)
         return;
@@ -255,8 +255,8 @@ void fibonacci_heap<Key>::cut(node<Key>* x)
             min = x;
         return;
     }
-    node<Key>* L = x->adoptee;
-    node<Key>* R = x->sibling;
+    fibonacci_node<Key>* L = x->adoptee;
+    fibonacci_node<Key>* R = x->sibling;
     L->sibling = R;
     R->adoptee = L;
     x->sibling = x;
@@ -270,11 +270,11 @@ void fibonacci_heap<Key>::cut(node<Key>* x)
 }
 
 template <class Key>
-void fibonacci_heap<Key>::cascadingCut(node<Key>* x)
+void fibonacci_heap<Key>::cascadingCut(fibonacci_node<Key>* x)
 {
     while (x != nullptr && x->parent != nullptr && x->mark == false)
     {
-        node<Key>* tmp = x->parent;
+        fibonacci_node<Key>* tmp = x->parent;
         cut(x);
         x = tmp;
     }
@@ -285,7 +285,7 @@ void fibonacci_heap<Key>::cascadingCut(node<Key>* x)
 template <class Key>
 void fibonacci_heap<Key>::merge(fibonacci_heap<Key>* otherHeap)
 {
-    node<Key>* otherMin = otherHeap->min;
+    fibonacci_node<Key>* otherMin = otherHeap->min;
     heap_size += otherHeap->heap_size;
     otherHeap->heap_size = 0;
     unionList(min, otherMin);

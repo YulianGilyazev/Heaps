@@ -1,6 +1,7 @@
 #include "binary_heap.h"
 #include<stdexcept>
 
+using std::vector;
 using std::logic_error;
 using std::out_of_range;
 
@@ -19,7 +20,7 @@ bool binary_heap<Key>::is_empty() const
 template <class Key>
 int* binary_heap<Key>::insert(Key key)
 {
-    node<Key> x;
+    binary_node<Key> x;
     int* a = new int;
     *a = T.size();
     x.value = key;
@@ -44,7 +45,7 @@ binary_heap<Key>::binary_heap(iterator begin, iterator end)
 {
     for (; begin != end; ++begin)
     {
-        node<Key> x;
+        binary_node<Key> x;
         x.value = *begin;
         x.ptr = nullptr;
         T.push_back(x);
