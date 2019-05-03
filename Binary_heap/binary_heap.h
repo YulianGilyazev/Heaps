@@ -1,7 +1,9 @@
-#include "my_vector.h"
+#include <vector>
+
+using std::vector;
 
 template <class Key>
-struct node
+struct binary_node
 {
     Key value;
     bool mark;
@@ -29,9 +31,7 @@ private:
     void _swap(int x, int y);
     void siftUp(int i);
     void siftDown(int i);
-    my_vector <node<Key>> T;
-    my_vector <int> R;
+    vector <binary_node<Key>> T;
+    vector <int> R;
     int ans;
-
-
 };
