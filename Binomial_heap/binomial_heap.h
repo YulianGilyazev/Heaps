@@ -1,13 +1,13 @@
 template <class Key>
-struct node
+struct binomial_node
 {
     Key value;
-    node<Key> *parent;
-    node<Key> *child; // указатель на левого сына
-    node<Key> *sibling; // указатель на правого брата
-    node<Key> *adoptee; //указатель на левого брата
+    binomial_node<Key> *parent;
+    binomial_node<Key> *child; // указатель на левого сына
+    binomial_node<Key> *sibling; // указатель на правого брата
+    binomial_node<Key> *adoptee; //указатель на левого брата
     int degree; // количество сыновей
-    node<Key> *point;
+    binomial_node<Key> *point;
     bool mark;
 };
 
@@ -16,22 +16,22 @@ class binomial_heap
 {
 public:
     bool is_empty();
-    node<Key>* insert(Key key);
+    binomial_node<Key>* insert(Key key);
     Key get_min();
     Key extract_min();
 
-    void erase(node<Key>* ptr);
-    void change(node<Key>* ptr, Key new_value);
+    void erase(binomial_node<Key>* ptr);
+    void change(binomial_node<Key>* ptr, Key new_value);
     binomial_heap();
     void merge(binomial_heap<Key>* otherHeap);
 private:
-    node<Key>* heap_merge(node<Key>* heap1, node<Key>* heap2);
-    node<Key>* tree_merge(node<Key>* root1, node<Key>* root2);
+    binomial_node<Key>* heap_merge(binomial_node<Key>* heap1, binomial_node<Key>* heap2);
+    binomial_node<Key>* tree_merge(binomial_node<Key>* root1, binomial_node<Key>* root2);
     int heap_size;
-    node<Key>* Heap;
-    void siftUp(node<Key>* ptr);
-    void siftDown(node<Key>* ptr);
-    void _swap(node<Key>* ptr1, node<Key>* ptr2);
-    node<Key>* tree_extract_min(node<Key>* min);
+    binomial_node<Key>* Heap;
+    void siftUp(binomial_node<Key>* ptr);
+    void siftDown(binomial_node<Key>* ptr);
+    void _swap(binomial_node<Key>* ptr1, binomial_node<Key>* ptr2);
+    binomial_node<Key>* tree_extract_min(binomial_node<Key>* min);
 
 };
