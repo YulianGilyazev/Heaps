@@ -3,6 +3,8 @@ compiler: gcc
 
 os:
   - linux
+env:
+  - PATH=${PWD}
 
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -13,7 +15,6 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90  
   - sudo apt-get install libgtest-dev
 before_script:
-  - PATH=${PWD}
   - mkdir build
   - cd build
   - cmake --version
