@@ -17,6 +17,7 @@ before_script:
   - cd build
   - cmake --version
   - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
+  - chmod +x build.sh
 script:
   - bash build.sh
 
