@@ -25,7 +25,6 @@ target_link_libraries(main Binomial_heap)
 option(BUILD_TESTS "Build unit tests" OFF)
 
 if (BUILD_TESTS)
-	add_subdirectory(ext/googletest)
 	include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 	set(SOURCE_EXE tests.cpp)
