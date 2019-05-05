@@ -13,12 +13,11 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90  
   - sudo apt-get install libgtest-dev
 before_script:
-  - PATH=${PWD}
   - mkdir build
   - cd build
   - cmake --version
   - cmake -DCMAKE_VERBOSE_MAKEFILE=ON ..
-  - cd ${PATH}
+  - cd ..
 script:
   - bash build.sh
 
