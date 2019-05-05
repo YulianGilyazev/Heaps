@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include "binary_heap.cpp"
 #include "binomial_heap.cpp"
 #include "fibonacci_heap.cpp"
