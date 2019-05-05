@@ -25,17 +25,17 @@ target_link_libraries(main Binomial_heap)
 option(BUILD_TESTS "Build unit tests" OFF)
 
 if (BUILD_TESTS)
-	enable_testing()
-	find_package(GTest REQUIRED)
-	include_directories(${GTEST_INCLUDE_DIR})
+	#enable_testing()
+	#find_package(GTest REQUIRED)
+	#include_directories(${GTEST_INCLUDE_DIR})
 
 	add_executable(tests test.cpp)
 
-	target_link_libraries(tests ${GTEST_LIBRARY_DEBUG} ${GTEST_MAIN_LIBRARY_DEBUG})
+	#target_link_libraries(tests ${GTEST_LIBRARY_DEBUG} ${GTEST_MAIN_LIBRARY_DEBUG})
 
 	target_link_libraries(tests Binomial_heap)
 	target_link_libraries(tests Binary_heap)
 	target_link_libraries(tests Fibonacci_heap)
-	target_link_libraries(tests gtest gtest_main)
-	add_test( tests tests )
+	#target_link_libraries(tests gtest gtest_main)
+	#add_test( tests tests )
 endif()
