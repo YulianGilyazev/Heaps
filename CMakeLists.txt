@@ -32,6 +32,7 @@ if (BUILD_TESTS)
 	add_executable(tests test.cpp)
 
 	#target_link_libraries(tests ${GTEST_LIBRARY_DEBUG} ${GTEST_MAIN_LIBRARY_DEBUG})
+        target_link_libraries(tests ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
 
 	target_link_libraries(tests Binomial_heap)
 	target_link_libraries(tests Binary_heap)
