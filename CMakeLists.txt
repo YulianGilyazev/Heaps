@@ -25,6 +25,7 @@ target_link_libraries(main Binomial_heap)
 option(BUILD_TESTS "Build unit tests" OFF)
 
 if (BUILD_TESTS)
+        ADD_SUBDIRECTORY (gtest-1.6.0)
 	enable_testing()
 	find_package(GTest REQUIRED)
 	include_directories(${GTEST_INCLUDE_DIR})
