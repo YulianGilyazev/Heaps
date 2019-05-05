@@ -25,31 +25,17 @@ target_link_libraries(main Binomial_heap)
 option(BUILD_TESTS "Build unit tests" OFF)
 
 if (BUILD_TESTS)
-	set(GOOGLETEST_ROOT gtest/googletest CACHE STRING "Google Test source root")
+	enable_testing()
+	find_package(GTest REQUIRED)
+	include_directories(${GTEST_INCLUDE_DIR})
 
-	include_directories(SYSTEM
-	    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}
-	    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
-	    )
+	add_executable(tests test.cpp)
 
-	set(GOOGLETEST_SOURCES
-	    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest-all.cc
-	    ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/src/gtest_main.cc
-	    )
-
-	foreach(_source ${GOOGLETEST_SOURCES})
-	    set_source_files_properties(${_source} PROPERTIES GENERATED 1)
-	endforeach()
-
-	add_library(gtest ${GOOGLETEST_SOURCES})
-	include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-
-	set(SOURCE_EXE tests.cpp)
-
-	add_executable(tests ${SOURCE_EXE})
+	target_link_libraries(tests ${GTEST_LIBRARY_DEBUG} ${GTEST_MAIN_LIBRARY_DEBUG})
 
 	target_link_libraries(tests Binomial_heap)
 	target_link_libraries(tests Binary_heap)
 	target_link_libraries(tests Fibonacci_heap)
 	target_link_libraries(tests gtest gtest_main)
+	add_test( tests tests )
 endif()
