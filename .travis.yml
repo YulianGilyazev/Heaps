@@ -11,23 +11,7 @@ before_install:
 install:
   - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
-  - CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz"
-  - mkdir -p ${DEPS_DIR}/cmake
-  - travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
   - sudo apt-get install libgtest-dev
-  - cd /usr/src/googletest/googletest
-  - sudo mkdir build
-  - cd build
-  - sudo cmake ..
-  - sudo make
-  - sudo cp libgtest* /usr/lib/
-  - cd ..
-  - sudo rm -rf build
-  - sudo mkdir /usr/local/lib/googletest
-  - sudo ln -s /usr/lib/libgtest.a /usr/local/lib/googletest/libgtest.a
-  - sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/googletest/libgtest_main.a
-
 script:
   - bash build.sh
 
