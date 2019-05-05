@@ -18,13 +18,7 @@ install:
 
   - sudo apt-get install -qq g++-5
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90  
-  
   - sudo apt-get install libgtest-dev
-  - cd /usr/src/gtest
-  - sudo cmake .
-  - sudo make
-  - sudo mv libgtest* /usr/lib/
-  - cd "${TRAVIS_BUILD_DIR}"
 script:
   - bash build.sh
 
