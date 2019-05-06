@@ -3,6 +3,6 @@
 mkdir compile_files
 cd compile_files
 cmake .. -DBUILD_TESTS=ON
-make
+@$(MAKE) DEBUG=TRUE
 bash tests
 
