@@ -1,4 +1,3 @@
-#pragma once
 #include "binomial_heap.h"
 #include<stdexcept>
 
