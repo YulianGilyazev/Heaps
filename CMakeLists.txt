@@ -11,16 +11,16 @@ include_directories(./Binary_heap)
 include_directories(./Binomial_heap)
 
 
-add_executable(main2 ${SOURCE_EXE})
+add_executable(main ${SOURCE_EXE})
 
 add_subdirectory(Fibonacci_heap)
 add_subdirectory(Binomial_heap)
 add_subdirectory(Binary_heap)
 
 
-target_link_libraries(main2 Fibonacci_heap)
-target_link_libraries(main2 Binary_heap)
-target_link_libraries(main2 Binomial_heap)
+target_link_libraries(main Fibonacci_heap)
+target_link_libraries(main Binary_heap)
+target_link_libraries(main Binomial_heap)
 
 option(BUILD_TESTS "Build unit tests" OFF)
 
